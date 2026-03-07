@@ -1,0 +1,16 @@
+Design a Parking Lot system that can:
+1)park vehicles
+2)unpark vehicles
+3)issue parking tickets
+4)track available spots
+
+support different vehicles
+1)Car
+2)Bike
+3)Truck
+
+
+################################################################################
+
+Solution:
+

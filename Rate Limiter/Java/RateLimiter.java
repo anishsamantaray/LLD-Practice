@@ -3,10 +3,9 @@ import java.util.Map;
 
 class RateLimiter {
 
-    private final Map<String, TokenBucket> buckets = new HashMap<>();
-
-    private final int capacity;
-    private final int refillRate;
+    private Map<String, TokenBucket> buckets = new HashMap<>();
+    private int capacity;
+    private int refillRate;
 
     public RateLimiter(int capacity, int refillRate) {
         this.capacity = capacity;
@@ -15,7 +14,11 @@ class RateLimiter {
 
     public boolean allowRequest(String clientId) {
 
-        TokenBucket bucket = buckets.computeIfAbsent(clientId,id -> new TokenBucket(capacity, refillRate);
+        if (!buckets.containsKey(clientId)) {
+            buckets.put(clientId, new TokenBucket(capacity, refillRate));
+        }
+
+        TokenBucket bucket = buckets.get(clientId);
 
         return bucket.tryConsume();
     }
