@@ -1,53 +1,47 @@
-import java.util.HashMap;
+class DoublyLinkedList {
 
-class LRUCache {
+    Node head;
+    Node tail;
 
-    private int capacity;
-    private HashMap<Integer, Node> map;
-    private DoublyLinkedList list;
+    DoublyLinkedList() {
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
 
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        this.map = new HashMap<>();
-        this.list = new DoublyLinkedList();
+        head.next = tail;
+        tail.prev = head;
     }
 
-    public int get(int key) {
+    // Add node right after head (Most Recently Used)
+ public void addFirst(Node node) {
 
-        if (!map.containsKey(key)) {
-            return -1;
-        }
+    Node tempNext = head.next;
 
-        Node node = map.get(key);
+    head.next = node;
+    node.prev = head;
 
-        list.remove(node);
-        list.addFirst(node);
+    node.next = tempNext;
+    tempNext.prev = node;
+}
 
-        return node.value;
+    // Remove any node
+    public void remove(Node node) {
+
+        Node tempPrev = node.prev;
+        Node tempNext = node.next;
+
+        prev.next = tempNext;
+        next.prev = tempPrev;
     }
 
-    public void put(int key, int value) {
+    // Remove least recently used node
+    public Node removeLast() {
 
-        if (map.containsKey(key)) {
-
-            Node node = map.get(key);
-            node.value = value;
-
-            list.remove(node);
-            list.addFirst(node);
-
-        } else {
-
-            if (map.size() == capacity) {
-
-                Node lru = list.removeLast();
-                map.remove(lru.key);
-            }
-
-            Node node = new Node(key, value);
-            map.put(key, node);
-
-            list.addFirst(node);
+        if (tail.prev == head) {
+            return null;
         }
+
+        Node lru = tail.prev;
+        remove(lru);
+        return lru;
     }
 }
